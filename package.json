@@ -1,11 +1,11 @@
 {
   "name": "@dada78641/repo-version",
   "description": "Retrieves versioning information from a .git directory",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
-  "main": "dist/lib/index.cjs",
-  "module": "dist/lib/index.js",
-  "types": "dist/lib/index.d.ts",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup",
     "watch": "tsup --watch src",
