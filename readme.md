@@ -8,9 +8,29 @@ It extracts data directly from the .git directory without spawning a subprocess.
 
 ## Usage
 
-```ts
-//asdf
+```bash
+npm i @dada78641/repo-version
 ```
+
+```ts
+import {getGitRepoInfo, type GitRepoInfo} from '@dada78641/repo-version'
+
+ // should have .git directory inside
+const repoInfo: GitRepoInfo = await getGitRepoInfo('/path/to/my/project')
+console.log(repoInfo)
+
+// logs:
+//
+// {
+//   branch: 'develop',
+//   branchRef: 'refs/heads/develop',
+//   hash: 'd59e60e50b13091cb86e8d267419820883cabc02',
+//   shortHash: 'd59e60e',
+//   commits: 3
+// }
+```
+
+If a .git directory is not found or invalid, getGitRepoInfo() will throw an error.
 
 ## License
 
