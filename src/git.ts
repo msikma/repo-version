@@ -159,34 +159,31 @@ async function locateGitDir(repoPath: string, isGitDir: boolean = false): Promis
 /**
  * Returns Git repo state information from a given Git repo.
  */
-export async function getGitRepoInfo(repoPath: string, isGitDir: boolean = false): Promise<GitRepoInfo | null> {
-  try {
-    const gitDir = await locateGitDir(repoPath, isGitDir)
-    if (!gitDir) throw new Error('Git repo not found or invalid')
-
-    const headFileValue = await getGitHeadFileValue(gitDir)
-    const branchFileValue = await getGitBranchFileValue(gitDir, headFileValue.branchRef)
-    const commitCount = await getGitCommitCount(gitDir, branchFileValue.hash ?? headFileValue.hash)
-
-    return {
-      branch: headFileValue.branch,
-      branchRef: headFileValue.branchRef,
-      hash: branchFileValue.hash ?? headFileValue.hash,
-      shortHash: branchFileValue.shortHash ?? headFileValue.shortHash,
-      commits: commitCount
-    }
+export async function getGitRepoInfo(repoPath: string, isGitDir: boolean = false): Promise<GitRepoInfo> {
+  const gitDir = await locateGitDir(repoPath, isGitDir)
+  if (!gitDir) {
+    throw new Error('Git repo not found or invalid')
   }
-  catch {
-    return null
+
+  const headFileValue = await getGitHeadFileValue(gitDir)
+  const branchFileValue = await getGitBranchFileValue(gitDir, headFileValue.branchRef)
+  const commitCount = await getGitCommitCount(gitDir, branchFileValue.hash ?? headFileValue.hash)
+
+  return {
+    branch: headFileValue.branch,
+    branchRef: headFileValue.branchRef,
+    hash: branchFileValue.hash ?? headFileValue.hash,
+    shortHash: branchFileValue.shortHash ?? headFileValue.shortHash,
+    commits: commitCount
   }
 }
 
 /**
  * Returns Git repo state information from this app's Git repo.
  */
-export async function getGitRepoInfoCached(repoPath: string, maxAge: number): Promise<GitRepoInfo | null> {
+export async function getGitRepoInfoCached(repoPath: string, maxAge: number): Promise<GitRepoInfo> {
   if (hasCachedData(maxAge)) {
-    return getCachedData(maxAge)
+    return getCachedData(maxAge)!
   }
   const gitInfo = await getGitRepoInfo(repoPath)
   saveInfoToCache(gitInfo)
