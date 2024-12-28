@@ -15,7 +15,7 @@ npm i @dada78641/repo-version
 ```ts
 import {getGitRepoInfo, type GitRepoInfo} from '@dada78641/repo-version'
 
- // should have .git directory inside
+// should have .git directory inside
 const repoInfo: GitRepoInfo = await getGitRepoInfo('/path/to/my/project')
 console.log(repoInfo)
 
