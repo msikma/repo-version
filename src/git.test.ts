@@ -34,6 +34,12 @@ describe('getGitRepoInfo', () => {
     }
   })
 
+  it('allows passing the repo directory or the .git directory', async () => {
+    const fromRepo = (await getGitRepoInfo(tempDir))!
+    const fromGit = (await getGitRepoInfo(path.join(tempDir, '.git'), true))!
+    expect(fromRepo).toStrictEqual(fromGit)
+  })
+
   it('should retrieve correct Git repository info', async () => {
     const repoInfo = (await getGitRepoInfo(tempDir))!
 

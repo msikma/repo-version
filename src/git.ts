@@ -130,8 +130,8 @@ async function getGitCommitCount(gitDir: string, startHash: string | null): Prom
  * The .git file is either a directory (like normal), or a file containing a gitdir: path.
  * The latter case is true if the .git repo is a submodule.
  */
-async function locateGitDir(repoPath: string): Promise<string | null> {
-  const gitFile = path.join(repoPath, '.git')
+async function locateGitDir(repoPath: string, isGitDir: boolean = false): Promise<string | null> {
+  const gitFile = isGitDir ? repoPath : path.join(repoPath, '.git')
   try {
     const stat = await fs.stat(gitFile)
     if (stat.isDirectory()) {
@@ -159,9 +159,9 @@ async function locateGitDir(repoPath: string): Promise<string | null> {
 /**
  * Returns Git repo state information from a given Git repo.
  */
-export async function getGitRepoInfo(repoPath: string): Promise<GitRepoInfo | null> {
+export async function getGitRepoInfo(repoPath: string, isGitDir: boolean = false): Promise<GitRepoInfo | null> {
   try {
-    const gitDir = await locateGitDir(repoPath)
+    const gitDir = await locateGitDir(repoPath, isGitDir)
     if (!gitDir) throw new Error('Git repo not found or invalid')
 
     const headFileValue = await getGitHeadFileValue(gitDir)
